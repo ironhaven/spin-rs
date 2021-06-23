@@ -344,7 +344,7 @@ impl<'a, T: ?Sized> DerefMut for TicketMutexGuard<'a, T> {
 
 impl<'a, T: ?Sized> Drop for TicketMutexGuard<'a, T> {
     fn drop(&mut self) {
-        let new_ticket = self.ticket + 1;
+        let new_ticket = self.ticket.wrapping_add(1);
         self.next_serving.store(new_ticket, Ordering::Release);
     }
 }
